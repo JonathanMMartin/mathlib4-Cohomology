@@ -92,17 +92,42 @@ lemma Coherent_implies_Quasicoherent (M : SheafOfModules.{u} R) :
   IsCoherent M → M.IsQuasicoherent :=
   by sorry
 
-theorem Coherent_eq_WeakCoherent (X : Scheme) [IsLocallyNoetherian X]
+lemma ker_of_finite_type_morphism_is_finite_type {M N : SheafOfModules.{u} R} (φ : M ⟶ N) [M.IsFiniteType] [IsCoherent N] :
+  (CategoryTheory.Limits.kernel φ).IsFiniteType := by sorry
+
+#check SheafOfModules.free
+
+lemma free_finite_module_is_finite_type (I : Type u) [Finite I] :
+  SheafOfModules.free (J := J) (R := R) I |>.IsFiniteType := sorry
+
+lemma pullback_coherent_is_coherent (M : SheafOfModules R) (σ : M.LocalSectionData) [IsCoherent M]:
+  ∀ i : σ.I, IsCoherent (M.over (σ.X i)) :=
+  by sorry
+
+theorem Coherent_implies_WeakCoherent (X : Scheme) [IsLocallyNoetherian X]
   (M : SheafOfModules X.ringCatSheaf) :
-  IsCoherent M ↔ IsWeakCoherent X M := by
-  constructor
-  · intro h1
+  IsCoherent M → IsWeakCoherent X M := by
+    intro h1
     constructor
     · apply Coherent_implies_Quasicoherent M
       exact h1
     · exact h1.finiteType
-  · intro h2
-    constructor
-    · exact h2.finitetype
-    ·intro σ h3 i
-     sorry
+  -- · intro h2
+  --   constructor
+  --   · exact h2.finitetype
+  --   · intro σ h3 i
+  --     have π := (σ.sections i).π
+  --     have := (h3 i).finite
+  --     apply ker_of_finite_type_morphism_is_finite_type (σ.sections i).π
+
+  --     --exact free_finite_module_is_finite_type (σ.sections i).I
+  --     --exact pullback_coherent_is_coherent M σ
+  --     --· exact (SheafOfModules.Sections.π (M.over (σ.X i)))
+
+theorem WeakCoherent_implies_IsFinitePresentation (X : Scheme) [IsLocallyNoetherian X]
+  (M : SheafOfModules X.ringCatSheaf) :
+  IsWeakCoherent X M → M.IsFinitePresentation := by sorry
+
+theorem IsFinitePresentation_implies_Coherent (X : Scheme) [IsLocallyNoetherian X]
+  (M : SheafOfModules X.ringCatSheaf) :
+  M.IsFinitePresentation → IsCoherent M := by sorry
