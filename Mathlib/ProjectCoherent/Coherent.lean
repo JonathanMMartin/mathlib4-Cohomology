@@ -64,11 +64,27 @@ def cohProp : CategoryTheory.ObjectProperty (SheafOfModules.{u} R) := by
 
 variable [HasSheafify J AddCommGrpCat.{u}]
 
-noncomputable instance : (cohProp R).ContainsZero := by
+open ZeroObject
+
+noncomputable instance : (cohProp R).ContainsZero where
+  exists_zero := by
+    use 0
+    constructor
+    · exact Limits.isZero_zero (SheafOfModules R)
+    · constructor
+      · --put a lemma for first condition: zero object is of fintie type
+      · --put lemma for second condition: kernel is of finite type
+ sorry
+
+
+
+noncomputable instance : (cohProp R).IsClosedUnderKernels where
+  kernels_le := by
+    intro M hM
+    obtain ⟨ A, ker ⟩ := hM
   sorry
 
-noncomputable instance : (cohProp R).IsClosedUnderKernels := by
-  sorry
+
 
 noncomputable instance : (cohProp R).IsClosedUnderCokernels := by
   sorry
