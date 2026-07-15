@@ -3,6 +3,9 @@ module
 public import Mathlib.Algebra.Category.ModuleCat.Sheaf.Quasicoherent
 public import Mathlib.Algebra.Category.ModuleCat.Sheaf.Generators
 public import Mathlib.ProjectCoherent.Instances
+public import Mathlib.Algebra.Category.ModuleCat.Sheaf
+public import Mathlib.CategoryTheory.Abelian.Subcategory
+public import Mathlib.Algebra.Category.ModuleCat.Sheaf.Abelian
 
 @[expose] public section
 
@@ -53,5 +56,27 @@ class SheafOfModules.IsCoherent (M : SheafOfModules.{u} R) : Prop where
   forall_localSectionData (M) : --todo: should we combine the foralls?
     ∀ σ : M.LocalSectionData.{u'}, (∀ i, (σ.sections i).IsFiniteType) →
       ∀ i, (Limits.kernel (σ.sections i).π).IsFiniteType
+
+variable (R) in
+def cohProp : CategoryTheory.ObjectProperty (SheafOfModules.{u} R) := by
+  intro M
+  exact M.IsCoherent
+
+variable [HasSheafify J AddCommGrpCat.{u}]
+
+noncomputable instance : (cohProp R).ContainsZero := by
+  sorry
+
+noncomputable instance : (cohProp R).IsClosedUnderKernels := by
+  sorry
+
+noncomputable instance : (cohProp R).IsClosedUnderCokernels := by
+  sorry
+
+noncomputable instance : (cohProp R).IsClosedUnderFiniteProducts := by
+  sorry
+
+noncomputable instance : Abelian (cohProp R).FullSubcategory := by
+  infer_instance
 
 end
