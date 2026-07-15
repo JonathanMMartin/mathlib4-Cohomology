@@ -1,9 +1,17 @@
 
 module
 
+public import Mathlib.AlgebraicGeometry.Modules.Presheaf
+
 public import Mathlib.Algebra.Category.ModuleCat.Sheaf.Quasicoherent
 
 public import Mathlib.Algebra.Category.ModuleCat.Sheaf.Generators
+
+public import Mathlib.AlgebraicGeometry.Noetherian
+
+public import Mathlib.ProjectCoherent.WeakCoherent
+
+open AlgebraicGeometry
 
 universe u
 
@@ -76,3 +84,10 @@ class IsCoherent (M : SheafOfModules.{u} R)
   forall_localSectionData (M) : --todo: should we combine the foralls?
     ∀ (σ : (M.LocalSectionData.{u})), (∀ i, (σ.sections i).IsFiniteType) →
       ∀ i, ((CategoryTheory.Limits.kernel  (σ.sections i).π)).IsFiniteType
+
+variable (X : Scheme) [IsLocallyNoetherian X]
+  (M : SheafOfModules X.ringCatSheaf)
+
+theorem Coherent_eq_WeakCoherent (X : Scheme) [IsLocallyNoetherian X]
+  (M : SheafOfModules X.ringCatSheaf) :
+  IsCoherent M ↔ IsWeakCoherent X M := by sorry
