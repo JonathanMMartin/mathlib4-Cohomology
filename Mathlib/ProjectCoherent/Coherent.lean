@@ -88,6 +88,21 @@ class IsCoherent (M : SheafOfModules.{u} R)
 variable (X : Scheme) [IsLocallyNoetherian X]
   (M : SheafOfModules X.ringCatSheaf)
 
+lemma Coherent_implies_Quasicoherent (M : SheafOfModules.{u} R) :
+  IsCoherent M → M.IsQuasicoherent :=
+  by sorry
+
 theorem Coherent_eq_WeakCoherent (X : Scheme) [IsLocallyNoetherian X]
   (M : SheafOfModules X.ringCatSheaf) :
-  IsCoherent M ↔ IsWeakCoherent X M := by sorry
+  IsCoherent M ↔ IsWeakCoherent X M := by
+  constructor
+  · intro h1
+    constructor
+    · apply Coherent_implies_Quasicoherent M
+      exact h1
+    · exact h1.finiteType
+  · intro h2
+    constructor
+    · exact h2.finitetype
+    ·intro σ h3 i
+     sorry
