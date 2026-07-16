@@ -62,10 +62,51 @@ def cohProp : CategoryTheory.ObjectProperty (SheafOfModules.{u} R) := by
   intro M
   exact M.IsCoherent
 
+variable {M} in
+def SheafOfModules.Sections.map {N : SheafOfModules.{u} R} (σ : N.Sections)
+    (i : N ⟶ M) : M.Sections where
+  I := σ.I
+  s j := sectionsMap i (σ.s j)
+
+variable {M} in
+noncomputable
+def SheafOfModules.LocalSectionData.map {N : SheafOfModules.{u} R} (σ : N.LocalSectionData.{w})
+    (i : N ⟶ M) : M.LocalSectionData.{w} where
+  I := σ.I
+  X := σ.X
+  coversTop := σ.coversTop
+  sections j := (σ.sections j).map (i.over (σ.X j))
+
+theorem finitetypesubsheaf (h : SheafOfModules.IsCoherent M) (N : SheafOfModules.{u} R) {i : N ⟶ M}
+  (hi : Mono i) (hN : N.IsFiniteType) : SheafOfModules.IsCoherent N := by
+  constructor
+  · exact hN
+  intro σ h1 j
+  let U := σ.X j
+  -- have covers := σ.coversTop U
+  obtain ⟨genN, fingenN⟩ := hN
+  have kerfin := h.forall_localSectionData (σ.map i) (fun _ => ⟨(h1 _).1⟩) j
+  have compi : SheafOfModules.Sections.π (N.over (σ.X j)) (σ.sections j) ≫ i.over U =
+      SheafOfModules.Sections.π (M.over ((σ.map i).X j)) ((σ.map i).sections j) := by
+    sorry
+  rw [← compi] at kerfin
+
+  --intro σ h1 i
+  --have h2 := h1 i
+
+
+
+
+  sorry
+
+
+
+
 variable [HasSheafify J AddCommGrpCat.{u}]
 
 open ZeroObject
 
+lemma
 noncomputable instance : (cohProp R).ContainsZero where
   exists_zero := by
     use 0
