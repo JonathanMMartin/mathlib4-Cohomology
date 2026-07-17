@@ -67,11 +67,13 @@ variable [HasSheafify J AddCommGrpCat.{u}]
 variable {M} in
 theorem foo (h : Limits.IsZero M) (Y : C) : Limits.IsZero (M.over Y) := sorry
 
-theorem foo1 {M N : SheafOfModules.{u} R} (iso : M ≅ N) [M.IsFiniteType] : N.IsFiniteType := sorry
+theorem foo1 {M N : SheafOfModules.{u} R} (iso : M ≅ N) [M.IsFiniteType] :
+N.IsFiniteType := sorry
 
 instance (X : C) : HasSheafify (J.over X) AddCommGrpCat := sorry
 
-instance (I : Type u) [Finite I] : (SheafOfModules.free (C := C) (J := J) (R := R) I).IsFiniteType := sorry
+instance (I : Type u) [Finite I] : (SheafOfModules.free (C := C) (J := J)
+(R := R) I).IsFiniteType := sorry
 
 noncomputable instance : (cohProp R).ContainsZero where
   exists_zero := by
@@ -103,7 +105,8 @@ noncomputable instance : (cohProp R).ContainsZero where
         infer_instance
       intro σ' h i'
       let iso : SheafOfModules.free (σ'.sections i').I ≅
-        Limits.kernel (SheafOfModules.Sections.π (M.over (σ'.X i')) (σ'.sections i')) := by
+        Limits.kernel (SheafOfModules.Sections.π (M.over (σ'.X i'))
+         (σ'.sections i')) := by
           convert Limits.kernelZeroIsoSource.symm
           apply Limits.IsZero.eq_zero_of_tgt
           exact foo hM _
