@@ -64,8 +64,51 @@ def cohProp : CategoryTheory.ObjectProperty (SheafOfModules.{u} R) := by
 
 variable [HasSheafify J AddCommGrpCat.{u}]
 
-noncomputable instance : (cohProp R).ContainsZero := by
-  sorry
+variable {M} in
+theorem foo (h : Limits.IsZero M) (Y : C) : Limits.IsZero (M.over Y) := sorry
+
+theorem foo1 {M N : SheafOfModules.{u} R} (iso : M ≅ N) [M.IsFiniteType] : N.IsFiniteType := sorry
+
+instance (X : C) : HasSheafify (J.over X) AddCommGrpCat := sorry
+
+instance (I : Type u) [Finite I] : (SheafOfModules.free (C := C) (J := J) (R := R) I).IsFiniteType := sorry
+
+noncomputable instance : (cohProp R).ContainsZero where
+  exists_zero := by
+    have keyfact : ∃ M : SheafOfModules R, Limits.IsZero M := by
+      exact CategoryTheory.Limits.HasZeroObject.zero
+    obtain ⟨M,hM⟩:= keyfact
+    use M
+    constructor
+    · exact hM
+    · constructor
+      · constructor
+        let σ : M.LocalGeneratorsData :=
+            { I := C
+              X := id
+              coversTop c := by
+                simp
+              generators i :=
+              { I := PEmpty
+                s := PEmpty.elim
+                epi := by
+                  apply Limits.IsZero.epi
+                  exact foo hM i}
+            }
+        use σ
+        constructor
+        intro i
+        refine ⟨?_⟩
+        dsimp [σ]
+        infer_instance
+      intro σ' h i'
+      let iso : SheafOfModules.free (σ'.sections i').I ≅
+        Limits.kernel (SheafOfModules.Sections.π (M.over (σ'.X i')) (σ'.sections i')) := by
+          convert Limits.kernelZeroIsoSource.symm
+          apply Limits.IsZero.eq_zero_of_tgt
+          exact foo hM _
+      have : Finite (σ'.sections i').I := h i' |>.finite
+      apply foo1 iso
 
 noncomputable instance : (cohProp R).IsClosedUnderKernels := by
   sorry
