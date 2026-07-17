@@ -77,6 +77,7 @@ def SheafOfModules.LocalSectionData.map {N : SheafOfModules.{u} R} (σ : N.Local
   coversTop := σ.coversTop
   sections j := (σ.sections j).map (i.over (σ.X j))
 
+-- Lemma 1: any finite type subsheaf of a coherent sheaf is coherent
 theorem finitetypesubsheaf (h : SheafOfModules.IsCoherent M) (N : SheafOfModules.{u} R) {i : N ⟶ M}
   (hi : Mono i) (hN : N.IsFiniteType) : SheafOfModules.IsCoherent N := by
   constructor
@@ -90,10 +91,6 @@ theorem finitetypesubsheaf (h : SheafOfModules.IsCoherent M) (N : SheafOfModules
       SheafOfModules.Sections.π (M.over ((σ.map i).X j)) ((σ.map i).sections j) := by
     sorry
   rw [← compi] at kerfin
-
-  --intro σ h1 i
-  --have h2 := h1 i
-
 
 
 
@@ -119,6 +116,7 @@ noncomputable instance : (cohProp R).ContainsZero where
 
 
 
+-- Ideally, we should show kernel is of finite type and then use Lemma 1
 noncomputable instance : (cohProp R).IsClosedUnderKernels where
   kernels_le := by
     intro M hM
